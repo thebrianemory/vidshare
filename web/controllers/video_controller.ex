@@ -1,5 +1,6 @@
 defmodule Vidshare.VideoController do
   use Vidshare.Web, :controller
+  use Rummage.Phoenix.Controller
 
   alias Vidshare.Video
 
