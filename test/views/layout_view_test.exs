@@ -3,6 +3,6 @@ defmodule Vidshare.LayoutViewTest do
 
   test "Verify navbar is displayed", %{conn: conn} do
     conn = get conn, "/"
-    assert html_response(conn, 200) =~ "<div class=\"top-bar\" id=\"my-menu\">"
+    assert html_response(conn, 200) =~ "<nav class=\"navbar navbar-default\">"
   end
 end
