@@ -14,15 +14,27 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li>
-          <a href="#">Videos</a>
-        </li>
-        <li>
-          <a href="#">Add Video</a>
-        </li>
-        <li>
-          <a href="#">Sign in with Google</a>
-        </li>
+        <%= if @conn.assigns[:user] do %>
+          <li class="menu-text">
+            Welcome, <%= @conn.assigns.user.first_name %>!
+          </li>
+          <li>
+            <a href="#">Videos</a>
+          </li>
+          <li>
+            <a href="#">Add Video</a>
+          </li>
+          <li>
+            <%= link "Sign out", to: auth_path(@conn, :signout), class: "button alert" %>
+          </li>
+        <% else %>
+          <li>
+            <a href="#">Videos</a>
+          </li>
+          <li>
+            <%= link "Sign in with Google", to: auth_path(@conn, :request, "google", scope: "email profile"), class: "button" %>
+          </li>
+        <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
