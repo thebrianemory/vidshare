@@ -11,7 +11,11 @@ defmodule Vidshare.VideoControllerTest do
   end
 
   test "renders form for new resources", %{conn: conn} do
-    conn = get conn, video_path(conn, :new)
+    user = insert(:user)
+
+    conn = conn
+    |> assign(:user, user)
+    |> get(video_path(conn, :new))
     assert html_response(conn, 200) =~ "Add video"
   end
 
@@ -33,7 +37,11 @@ defmodule Vidshare.VideoControllerTest do
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = post conn, video_path(conn, :create), video: @invalid_attrs
+    user = insert(:user)
+
+    conn = conn
+    |> assign(:user, user)
+    |> post(video_path(conn, :create), video: @invalid_attrs)
     assert html_response(conn, 200) =~ "Add video"
   end
 
