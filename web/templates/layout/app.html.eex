@@ -13,14 +13,13 @@
 
   <body>
     <div>
-      <div class="columns-md-12">
-        <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-        <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= render "_navigation.html", conn: @conn %>
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
-        <main role="">
-          <%= render @view_module, @view_template, assigns %>
-        </main>
-      </div>
+      <main role="">
+        <%= render @view_module, @view_template, assigns %>
+      </main>
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
