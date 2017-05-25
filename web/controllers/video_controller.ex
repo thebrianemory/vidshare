@@ -3,7 +3,8 @@ defmodule Vidshare.VideoController do
 
   alias Vidshare.Video
 
-  plug Catcasts.Plugs.RequireAuth when action in [:new, :create, :delete]
+  plug Vidshare.Plugs.RequireAuth when action in [:new, :create, :delete]
+  plug :check_video_owner when action in [:delete]
 
   def index(conn, _params) do
     videos = Repo.all(Video)
@@ -95,5 +96,18 @@ defmodule Vidshare.VideoController do
     converted_secs = if String.length(seconds) == 2, do: seconds, else: Enum.join(["0", seconds], "")
 
     Enum.join([converted_hrs, converted_mins, converted_secs], ":")
+  end
+
+  defp check_video_owner(conn, _params) do
+    %{params: %{"id" => video_id}} = conn
+
+    if Repo.get(Video, video_id).user_id == conn.assigns.user.id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You cannot do that")
+      |> redirect(to: video_path(conn, :index))
+      |> halt()
+    end
   end
 end
