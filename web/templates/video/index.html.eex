@@ -25,7 +25,9 @@
 
       <td class="text-right">
         <%= link "Show", to: video_path(@conn, :show, video), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: video_path(@conn, :delete, video), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= if @conn.assigns.user.id == video.user_id do %>
+          <%= link "Delete", to: video_path(@conn, :delete, video), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <% end %>
       </td>
     </tr>
 <% end %>
