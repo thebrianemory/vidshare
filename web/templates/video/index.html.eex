@@ -19,12 +19,6 @@
             <h4>
               <%= link video.title, to: video_path(@conn, :show, video) %> <span class="duration-text">(<%= video.duration %>)</span>
             </h4>
-            <div>
-              Views: <%= Number.Delimit.number_to_delimited(video.view_count, precision: 0) %>
-            </div>
-            <div>
-              <%= link img_tag(video.thumbnail, style: "height:200px"), to: video_path(@conn, :show, video) %>
-            </div>
             <hr>
           </div>
         </div>
