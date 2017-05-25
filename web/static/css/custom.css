@@ -5,6 +5,7 @@
   margin-top: -20px;
 }
 
+/* Hero section */
 .hero-section {
   background: linear-gradient(
   rgba(0, 0, 0, 0.3),
@@ -30,4 +31,13 @@
 .hero-section .hero-section-text {
   color: #fefefe;
   text-shadow: 1px 1px 2px #0a0a0a;
+}
+
+/* Video index */
+.video-index {
+  padding-top: 10px;
+}
+.duration-text {
+  font-size: .65em;
+  color: #555;
 }
