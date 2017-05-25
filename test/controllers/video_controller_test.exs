@@ -46,7 +46,8 @@ defmodule Vidshare.VideoControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    video = Repo.insert! %Video{}
+    video = insert(:video)
+
     conn = get conn, video_path(conn, :show, video)
     assert html_response(conn, 200) =~ "Show video"
   end
@@ -58,8 +59,12 @@ defmodule Vidshare.VideoControllerTest do
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    video = Repo.insert! %Video{}
-    conn = delete conn, video_path(conn, :delete, video)
+    user = insert(:user)
+    video = insert(:video, user: user)
+
+    conn = conn
+    |> assign(:user, user)
+    |> delete(video_path(conn, :delete, video))
     assert redirected_to(conn) == video_path(conn, :index)
     refute Repo.get(Video, video.id)
   end
