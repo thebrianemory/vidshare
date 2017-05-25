@@ -25,6 +25,12 @@ defmodule Vidshare.AuthController do
     end
   end
 
+  def delete(conn, _params) do
+    conn
+    |> configure_session(drop: true)
+    |> redirect(to: "/")
+  end
+
   defp insert_or_update_user(changeset) do
     case Repo.get_by(User, email: changeset.changes.email) do
       nil ->
