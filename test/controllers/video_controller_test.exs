@@ -7,7 +7,7 @@ defmodule Vidshare.VideoControllerTest do
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, video_path(conn, :index)
-    assert html_response(conn, 200) =~ "All videos"
+    assert html_response(conn, 200) =~ "Sort by:"
   end
 
   test "renders form for new resources", %{conn: conn} do
