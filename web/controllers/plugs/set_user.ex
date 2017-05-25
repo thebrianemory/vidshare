@@ -1,6 +1,5 @@
 defmodule Vidshare.Plugs.SetUser do
   import Plug.Conn
-  import Phoenix.Controller
 
   alias Vidshare.Repo
   alias Vidshare.User
