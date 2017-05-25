@@ -31,26 +31,6 @@ defmodule Vidshare.VideoController do
     render(conn, "show.html", video: video)
   end
 
-  def edit(conn, %{"id" => id}) do
-    video = Repo.get!(Video, id)
-    changeset = Video.changeset(video)
-    render(conn, "edit.html", video: video, changeset: changeset)
-  end
-
-  def update(conn, %{"id" => id, "video" => video_params}) do
-    video = Repo.get!(Video, id)
-    changeset = Video.changeset(video, video_params)
-
-    case Repo.update(changeset) do
-      {:ok, video} ->
-        conn
-        |> put_flash(:info, "Video updated successfully.")
-        |> redirect(to: video_path(conn, :show, video))
-      {:error, changeset} ->
-        render(conn, "edit.html", video: video, changeset: changeset)
-    end
-  end
-
   def delete(conn, %{"id" => id}) do
     video = Repo.get!(Video, id)
 

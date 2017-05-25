@@ -38,25 +38,6 @@ defmodule Vidshare.VideoControllerTest do
     end
   end
 
-  test "renders form for editing chosen resource", %{conn: conn} do
-    video = Repo.insert! %Video{}
-    conn = get conn, video_path(conn, :edit, video)
-    assert html_response(conn, 200) =~ "Edit video"
-  end
-
-  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    video = Repo.insert! %Video{}
-    conn = put conn, video_path(conn, :update, video), video: @valid_attrs
-    assert redirected_to(conn) == video_path(conn, :show, video)
-    assert Repo.get_by(Video, @valid_attrs)
-  end
-
-  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    video = Repo.insert! %Video{}
-    conn = put conn, video_path(conn, :update, video), video: @invalid_attrs
-    assert html_response(conn, 200) =~ "Edit video"
-  end
-
   test "deletes chosen resource", %{conn: conn} do
     video = Repo.insert! %Video{}
     conn = delete conn, video_path(conn, :delete, video)
