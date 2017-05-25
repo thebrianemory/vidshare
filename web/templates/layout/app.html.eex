@@ -14,9 +14,7 @@
   <body>
     <div>
       <%= render "_navigation.html", conn: @conn %>
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
+      <%= render "_flash.html", conn: @conn %>
       <main role="">
         <%= render @view_module, @view_template, assigns %>
       </main>

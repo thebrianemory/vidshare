@@ -1,6 +1,10 @@
 /* Phoenix flash messages */
 .alert:empty { display: none; }
 
+.alert {
+  margin-top: -20px;
+}
+
 .hero-section {
   background: linear-gradient(
   rgba(0, 0, 0, 0.3),
