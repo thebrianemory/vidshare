@@ -1,9 +1,18 @@
 <div class="container video-index">
   <div class="col-md-8 col-md-offset-2">
     <div class="well">
-      <h2 class="text-center">
-        All videos
-      </h2>
+      <div class="well">
+        <p>
+          Sort by: <%= sort_link @conn, @rummage, [field: :title, ci: true] %> ~
+          <%= sort_link @conn, @rummage, [field: :view_count] %> ~
+          <%= sort_link @conn, @rummage, [field: :duration] %>
+        </p>
+
+        <p>
+          <%= search_form(@conn, @rummage, [fields: [title: %{label: "", search_type: "ilike"},],
+                                            button_class: "btn btn-default"]) %>
+        </p>
+      </div>
       <%= for video <- @videos do %>
         <div class="row">
           <div class="col-sm-10">
