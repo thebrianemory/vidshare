@@ -25,6 +25,8 @@ defmodule Vidshare.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
+      import Vidshare.Factory
+
       import Vidshare.Router.Helpers
 
       # The default endpoint for testing
