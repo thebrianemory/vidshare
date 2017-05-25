@@ -19,7 +19,8 @@ defmodule Vidshare.Mixfile do
   def application do
     [mod: {Vidshare, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :ex_machina, :ueberauth, :ueberauth_google]]
+                    :phoenix_ecto, :postgrex, :ex_machina, :ueberauth, :ueberauth_google,
+                    :poison, :httpoison]]
   end
 
   # Specifies which paths to compile per environment.
@@ -40,7 +41,9 @@ defmodule Vidshare.Mixfile do
      {:cowboy, "~> 1.0"},
      {:ex_machina, "~> 2.0"},
      {:ueberauth, "~> 0.4"},
-     {:ueberauth_google, "~> 0.5"}]
+     {:ueberauth_google, "~> 0.5"},
+     {:poison, "~> 3.0", override: true},
+     {:httpoison, "~> 0.11.1"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
