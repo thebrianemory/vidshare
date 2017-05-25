@@ -23,6 +23,7 @@ defmodule Vidshare.Router do
   scope "/auth", Vidshare do
     pipe_through :browser
 
+    get "/signout", AuthController, :delete
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :new
   end
