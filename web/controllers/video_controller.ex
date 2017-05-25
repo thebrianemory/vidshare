@@ -3,6 +3,8 @@ defmodule Vidshare.VideoController do
 
   alias Vidshare.Video
 
+  plug Catcasts.Plugs.RequireAuth when action in [:new, :create, :delete]
+
   def index(conn, _params) do
     videos = Repo.all(Video)
     render(conn, "index.html", videos: videos)
