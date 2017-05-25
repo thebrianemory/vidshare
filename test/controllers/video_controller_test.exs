@@ -2,8 +2,8 @@ defmodule Vidshare.VideoControllerTest do
   use Vidshare.ConnCase
 
   alias Vidshare.Video
-  @valid_attrs %{duration: "some content", thumbnail: "some content", title: "some content", video_id: "some content", view_count: 42}
-  @invalid_attrs %{}
+  @valid_attrs %{video_id: "https://www.youtube.com/watch?v=wZZ7oFKsKzY"}
+  @invalid_attrs %{video_id: ""}
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, video_path(conn, :index)
@@ -16,9 +16,20 @@ defmodule Vidshare.VideoControllerTest do
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, video_path(conn, :create), video: @valid_attrs
-    assert redirected_to(conn) == video_path(conn, :index)
-    assert Repo.get_by(Video, @valid_attrs)
+    user = insert(:user)
+
+    conn = conn
+    |> bypass_through(Catcasts.Router, [:browser])
+    |> get("/")
+    |> put_session(:user_id, user.id)
+    |> send_resp(:ok, "")
+    |> recycle()
+    |> assign(:set_user, user)
+    |> post(video_path(conn, :create), video: @valid_attrs)
+
+    video = Video |> Ecto.Query.last |> Repo.one
+    assert redirected_to(conn) == video_path(conn, :show, video)
+    assert get_flash(conn, :info) == "Video created successfully."
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
