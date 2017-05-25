@@ -25,7 +25,7 @@
             <a href="#">Add Video</a>
           </li>
           <li>
-            <%= link "Sign out", to: auth_path(@conn, :signout), class: "button alert" %>
+            <%= link "Sign out", to: auth_path(@conn, :delete), class: "button alert" %>
           </li>
         <% else %>
           <li>
