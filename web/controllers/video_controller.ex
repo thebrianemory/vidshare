@@ -82,4 +82,16 @@ defmodule Vidshare.VideoController do
     |> put_flash(:info, "Video deleted successfully.")
     |> redirect(to: video_path(conn, :index))
   end
+
+  defp get_formatted_time(length) do
+    hours = hd((Regex.run(~r/\d+/, Enum.at(length, 0)) || ["00"]))
+    minutes = hd((Regex.run(~r/\d+/, Enum.at(length, 1)) || ["00"]))
+    seconds = hd((Regex.run(~r/\d+/, Enum.at(length, 2)) || ["00"]))
+
+    converted_hrs = if String.length(hours) == 2, do: hours, else: Enum.join(["0", hours], "")
+    converted_mins = if String.length(minutes) == 2, do: minutes, else: Enum.join(["0", minutes], "")
+    converted_secs = if String.length(seconds) == 2, do: seconds, else: Enum.join(["0", seconds], "")
+
+    Enum.join([converted_hrs, converted_mins, converted_secs], ":")
+  end
 end
