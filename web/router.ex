@@ -19,6 +19,13 @@ defmodule Vidshare.Router do
     get "/", PageController, :index
   end
 
+  scope "/auth", Vidshare do
+    pipe_through :browser
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :new
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", Vidshare do
   #   pipe_through :api
