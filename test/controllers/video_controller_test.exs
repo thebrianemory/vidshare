@@ -19,7 +19,7 @@ defmodule Vidshare.VideoControllerTest do
     user = insert(:user)
 
     conn = conn
-    |> bypass_through(Catcasts.Router, [:browser])
+    |> bypass_through(Vidshare.Router, [:browser])
     |> get("/")
     |> put_session(:user_id, user.id)
     |> send_resp(:ok, "")
