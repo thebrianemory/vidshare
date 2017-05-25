@@ -16,17 +16,17 @@
       <ul class="nav navbar-nav navbar-right">
         <%= if @conn.assigns[:user] do %>
           <li>
-            <a href="#">Videos</a>
+            <%= link "Videos", to: video_path(@conn, :index) %>
           </li>
           <li>
-            <a href="#">Add Video</a>
+            <%= link "Add Video", to: video_path(@conn, :new) %>
           </li>
           <li>
             <%= link "Sign out", to: auth_path(@conn, :delete) %>
           </li>
         <% else %>
           <li>
-            <a href="#">Videos</a>
+            <%= link "Videos", to: video_path(@conn, :index) %>
           </li>
           <li>
             <%= link "Sign in with Google", to: auth_path(@conn, :request, "google", scope: "email profile") %>
