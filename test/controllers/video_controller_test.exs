@@ -46,10 +46,13 @@ defmodule Vidshare.VideoControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    video = insert(:video)
+    user = insert(:user)
+    video = insert(:video, user: user)
 
-    conn = get conn, video_path(conn, :show, video)
-    assert html_response(conn, 200) =~ "Show video"
+    conn = conn
+    |> assign(:user, user)
+    |> get(video_path(conn, :show, video))
+    assert html_response(conn, 200) =~ video.title
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
