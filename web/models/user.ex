@@ -7,6 +7,7 @@ defmodule Vidshare.User do
     field :email, :string
     field :provider, :string
     field :token, :string
+    has_many :videos, Vidshare.Video
 
     timestamps()
   end
