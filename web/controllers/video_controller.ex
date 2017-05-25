@@ -6,9 +6,18 @@ defmodule Vidshare.VideoController do
   plug Vidshare.Plugs.RequireAuth when action in [:new, :create, :delete]
   plug :check_video_owner when action in [:delete]
 
-  def index(conn, _params) do
-    videos = Repo.all(Video)
-    render(conn, "index.html", videos: videos)
+  def index(conn, params) do
+    Video
+    |> Repo.all
+    |> Repo.preload(:user)
+
+    {query, rummage} = Video
+    |> Video.rummage(params["rummage"])
+
+    videos = query
+    |> Repo.all
+    |> Repo.preload(:user)
+    render(conn, "index.html", videos: videos, rummage: rummage)
   end
 
   def new(conn, _params) do
