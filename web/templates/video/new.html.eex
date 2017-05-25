@@ -1,6 +1,15 @@
-<h2>New video</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: video_path(@conn, :create) %>
-
-<%= link "Back", to: video_path(@conn, :index) %>
+<div class="container video-index">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="well">
+      <div>
+        <h2>Add a video</h2>
+        <div>
+          <%= render "form.html", changeset: @changeset, action: video_path(@conn, :create) %>
+        </div>
+        <div>
+          <%= link "Back", to: video_path(@conn, :index), class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
