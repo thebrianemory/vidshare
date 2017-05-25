@@ -43,7 +43,8 @@ defmodule Vidshare.Mixfile do
      {:ueberauth, "~> 0.4"},
      {:ueberauth_google, "~> 0.5"},
      {:poison, "~> 3.0", override: true},
-     {:httpoison, "~> 0.11.1"}]
+     {:httpoison, "~> 0.11.1"},
+     {:number, "~> 0.5.1"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
