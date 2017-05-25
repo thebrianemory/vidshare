@@ -1,5 +1,6 @@
 defmodule Vidshare.Video do
   use Vidshare.Web, :model
+  use Rummage.Ecto
 
   schema "videos" do
     field :video_id, :string

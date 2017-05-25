@@ -1,6 +1,5 @@
 defmodule Vidshare.User do
   use Vidshare.Web, :model
-  use Rummage.Ecto
 
   schema "users" do
     field :first_name, :string

@@ -33,7 +33,7 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth,
 
 # Configure Rummage
 config :rummage_ecto, Rummage.Ecto,
-  default_repo: Catcasts.Repo,
+  default_repo: Vidshare.Repo,
   default_per_page: 5
 
 # Import environment specific config. This must remain at the bottom
