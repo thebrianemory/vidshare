@@ -19,7 +19,7 @@ defmodule Vidshare.Mixfile do
   def application do
     [mod: {Vidshare, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :ex_machina, :ueberauth, :ueberauth_google,
+                    :phoenix_ecto, :postgrex, :ex_machina, :ueberauth, :ueberauth_github,
                     :poison, :httpoison]]
   end
 
@@ -41,7 +41,7 @@ defmodule Vidshare.Mixfile do
      {:cowboy, "~> 1.0"},
      {:ex_machina, "~> 2.0"},
      {:ueberauth, "~> 0.4"},
-     {:ueberauth_google, "~> 0.5"},
+     {:ueberauth_github, "~> 0.4"},
      {:poison, "~> 3.0", override: true},
      {:httpoison, "~> 0.11.1"},
      {:number, "~> 0.5.1"},
