@@ -5,7 +5,7 @@ defmodule Vidshare.AuthController do
   alias Vidshare.User
 
   def new(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
-    user_params = %{token: auth.credentials.token, first_name: auth.info.first_name, last_name: auth.info.last_name, email: auth.info.email, provider: "google"}
+    user_params = %{token: auth.credentials.token, full_name: auth.info.name, email: auth.info.email, provider: "github"}
     changeset = User.changeset(%User{}, user_params)
 
     create(conn, changeset)
