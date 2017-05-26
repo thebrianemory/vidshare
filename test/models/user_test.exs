@@ -3,7 +3,7 @@ defmodule Vidshare.UserTest do
   alias Vidshare.User
 
   @valid_attrs %{token: "fahoifhaoaew0rheh0", email: "batman@example.com",
-                 first_name: "Bruce", last_name: "Wayne", provider: "google"}
+                 full_name: "Bruce Wayne", provider: "github"}
   @invalid_attrs %{}
 
   test "changeset with valide attributes" do

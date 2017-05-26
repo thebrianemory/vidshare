@@ -5,9 +5,8 @@ defmodule Vidshare.Factory do
     %Vidshare.User{
       token: "ffnebyt73bich9",
       email: "batman@example.com",
-      first_name: "Bruce",
-      last_name: "Wayne",
-      provider: "google"
+      full_name: "Bruce Wayne",
+      provider: "github"
     }
   end
 

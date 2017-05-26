@@ -6,10 +6,10 @@ defmodule Vidshare.LayoutViewTest do
     assert html_response(conn, 200) =~ "<nav class=\"navbar navbar-default\">"
   end
 
-  test "Sign in with Google link shown when not signed in", %{conn: conn} do
+  test "Sign in with GitHub link shown when not signed in", %{conn: conn} do
     conn = get conn, "/"
 
-    assert html_response(conn, 200) =~ "Sign in with Google"
+    assert html_response(conn, 200) =~ "Sign in with GitHub"
   end
 
   test "Sign out link shown when signed in", %{conn: conn} do
