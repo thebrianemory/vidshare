@@ -3,7 +3,7 @@ defmodule Vidshare.Video do
   use Rummage.Ecto
 
   schema "videos" do
-    field :video_id, :string
+    field :video_id, :string, unique: true
     field :title, :string
     field :duration, :string
     field :thumbnail, :string
@@ -20,5 +20,6 @@ defmodule Vidshare.Video do
     struct
     |> cast(params, [:video_id, :title, :duration, :thumbnail, :view_count])
     |> validate_required([:video_id, :title, :duration, :thumbnail, :view_count])
+    |> unique_constraint(:video_id)
   end
 end
