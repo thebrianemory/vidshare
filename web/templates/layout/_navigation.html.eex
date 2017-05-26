@@ -29,7 +29,7 @@
             <%= link "Videos", to: video_path(@conn, :index) %>
           </li>
           <li>
-            <%= link "Sign in with GitHub", to: auth_path(@conn, :request, "github", scope: "read:user read:org") %>
+            <%= link "Sign in with GitHub", to: auth_path(@conn, :request, "github", scope: "read:user user:email read:org") %>
           </li>
         <% end %>
       </ul>
