@@ -8,6 +8,7 @@ defmodule Vidshare.Repo.Migrations.CreateVideo do
       add :duration, :string
       add :thumbnail, :string
       add :view_count, :integer
+      add :embed, :string
       add :user_id, references(:users, on_delete: :nothing)
 
       timestamps()
