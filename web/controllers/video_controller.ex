@@ -1,5 +1,3 @@
-require IEx
-
 defmodule Vidshare.VideoController do
   use Vidshare.Web, :controller
   use Rummage.Phoenix.Controller
@@ -30,8 +28,6 @@ defmodule Vidshare.VideoController do
 
   def create(conn, %{"video" => video_params}) do
     # Sets regex to nil if invalid URL to make sure we only get valid YouTube/Vimeo links
-    # regex = Regex.run(~r/(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/, video_params["video_id"])
-
     regex = Regex.run(~r/^.*((youtu.be\/|vimeo.com\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/, video_params["video_id"])
 
     if regex == nil do
@@ -41,7 +37,7 @@ defmodule Vidshare.VideoController do
       |> put_flash(:error, "Invalid URL")
       |> render("new.html", changeset: changeset)
     else
-      # Grab only the video ID from the submitted YouTube link
+      # Grab only the video ID from the submitted YouTube/Vimeo link
       video_id = List.last(regex)
 
       valid_attrs = if Regex.run(~r/[a-z]/i, video_id) == nil do
@@ -51,8 +47,11 @@ defmodule Vidshare.VideoController do
         # Decode the JSON
         data = Poison.decode!(json_data.body, keys: :atoms)
 
+        # Convert the duration into a human readable format
+        duration = vimeo_sec_to_str(data.duration)
+
         # The information we need to create our video
-        %{duration: data.duration, thumbnail: List.last(data.pictures.sizes).link,
+        %{duration: duration, thumbnail: List.last(data.pictures.sizes).link,
           title: data.description, video_id: video_id,
           view_count: data.stats.plays,
           embed: "https://player.vimeo.com/video/#{video_id}?badge=0&autopause=0&player_id=0"}
@@ -62,13 +61,12 @@ defmodule Vidshare.VideoController do
 
         # Decode the JSON
         data = Poison.decode!(json_data.body, keys: :atoms)
-        IEx.pry
         # Grab our items from the JSON list within our data
         items = hd(data.items)
 
         # Convert the duration into a human readable format
         length_regex = tl(Regex.run(~r/PT(\d+H)?(\d+M)?(\d+S)?/, items.contentDetails.duration))
-        duration = get_formatted_time(length_regex)
+        duration = youtube_get_formatted_time(length_regex)
 
         # The information we need to create our video
         %{duration: duration, thumbnail: items.snippet.thumbnails.high.url,
@@ -115,7 +113,7 @@ defmodule Vidshare.VideoController do
     |> redirect(to: video_path(conn, :index))
   end
 
-  defp get_formatted_time(length) do
+  defp youtube_get_formatted_time(length) do
     hours = hd((Regex.run(~r/\d+/, Enum.at(length, 0)) || ["00"]))
     minutes = hd((Regex.run(~r/\d+/, Enum.at(length, 1)) || ["00"]))
     seconds = hd((Regex.run(~r/\d+/, Enum.at(length, 2)) || ["00"]))
@@ -123,6 +121,18 @@ defmodule Vidshare.VideoController do
     converted_hrs = if String.length(hours) == 2, do: hours, else: Enum.join(["0", hours], "")
     converted_mins = if String.length(minutes) == 2, do: minutes, else: Enum.join(["0", minutes], "")
     converted_secs = if String.length(seconds) == 2, do: seconds, else: Enum.join(["0", seconds], "")
+
+    Enum.join([converted_hrs, converted_mins, converted_secs], ":")
+  end
+
+  defp vimeo_sec_to_str(sec) do
+    {_, [s, m, h]} =
+        Enum.reduce([(60*60), 60, 1], {sec,[]}, fn divisor,{n,acc} ->
+          {rem(n,divisor), [div(n,divisor) | acc]}
+        end)
+    converted_hrs = if String.length("#{h}") == 2, do: "#{h}", else: Enum.join(["0", "#{h}"], "")
+    converted_mins = if String.length("#{m}") == 2, do: "#{m}", else: Enum.join(["0", "#{m}"], "")
+    converted_secs = if String.length("#{s}") == 2, do: "#{s}", else: Enum.join(["0", "#{s}"], "")
 
     Enum.join([converted_hrs, converted_mins, converted_secs], ":")
   end
