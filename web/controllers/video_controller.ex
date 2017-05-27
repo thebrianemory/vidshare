@@ -41,38 +41,9 @@ defmodule Vidshare.VideoController do
       video_id = List.last(regex)
 
       valid_attrs = if Regex.run(~r/[a-z]/i, video_id) == nil do
-        # Submit our info to the Vimeo API and get back the JSON
-        json_data = HTTPoison.get!("https://api.vimeo.com/videos/#{video_id}?fields=uri,name,description,link,duration,pictures,stats", %{"Authorization" => "bearer #{System.get_env("VIMEO_TOKEN")}"})
-
-        # Decode the JSON
-        data = Poison.decode!(json_data.body, keys: :atoms)
-
-        # Convert the duration into a human readable format
-        duration = vimeo_sec_to_str(data.duration)
-
-        # The information we need to create our video
-        %{duration: duration, thumbnail: List.last(data.pictures.sizes).link,
-          title: data.description, video_id: video_id,
-          view_count: data.stats.plays,
-          embed: "https://player.vimeo.com/video/#{video_id}?badge=0&autopause=0&player_id=0"}
+        create_vimeo_attributes(video_id)
       else
-        # Submit our info to the YouTube API and get back the JSON
-        json_data = HTTPoison.get! "https://www.googleapis.com/youtube/v3/videos?id=#{video_id}&key=#{System.get_env("YOUTUBE_API_KEY")}&part=snippet,statistics,contentDetails&fields=items(id,snippet(title,thumbnails(high)),statistics(viewCount),contentDetails(duration))"
-
-        # Decode the JSON
-        data = Poison.decode!(json_data.body, keys: :atoms)
-        # Grab our items from the JSON list within our data
-        items = hd(data.items)
-
-        # Convert the duration into a human readable format
-        length_regex = tl(Regex.run(~r/PT(\d+H)?(\d+M)?(\d+S)?/, items.contentDetails.duration))
-        duration = youtube_get_formatted_time(length_regex)
-
-        # The information we need to create our video
-        %{duration: duration, thumbnail: items.snippet.thumbnails.high.url,
-          title: items.snippet.title, video_id: video_id,
-          view_count: String.to_integer(items.statistics.viewCount),
-          embed: "https://www.youtube.com/embed/#{video_id}?rel=0"}
+        create_youtube_attributes(video_id)
       end
 
       # Creates are changeset and builds the association with the current user
@@ -111,6 +82,43 @@ defmodule Vidshare.VideoController do
     conn
     |> put_flash(:info, "Video deleted successfully.")
     |> redirect(to: video_path(conn, :index))
+  end
+
+  defp create_vimeo_attributes(video_id) do
+    # Submit our info to the Vimeo API and get back the JSON
+    json_data = HTTPoison.get!("https://api.vimeo.com/videos/#{video_id}?fields=uri,name,link,duration,pictures,stats", %{"Authorization" => "bearer #{System.get_env("VIMEO_TOKEN")}"})
+
+    # Decode the JSON
+    data = Poison.decode!(json_data.body, keys: :atoms)
+
+    # Convert the duration into a human readable format
+    duration = vimeo_sec_to_str(data.duration)
+
+    # The information we need to create our video
+    %{duration: duration, thumbnail: List.last(data.pictures.sizes).link,
+      title: data.name, video_id: video_id,
+      view_count: data.stats.plays,
+      embed: "https://player.vimeo.com/video/#{video_id}?badge=0&autopause=0&player_id=0"}
+  end
+
+  defp create_youtube_attributes(video_id) do
+    # Submit our info to the YouTube API and get back the JSON
+    json_data = HTTPoison.get! "https://www.googleapis.com/youtube/v3/videos?id=#{video_id}&key=#{System.get_env("YOUTUBE_API_KEY")}&part=snippet,statistics,contentDetails&fields=items(id,snippet(title,thumbnails(high)),statistics(viewCount),contentDetails(duration))"
+
+    # Decode the JSON
+    data = Poison.decode!(json_data.body, keys: :atoms)
+    # Grab our items from the JSON list within our data
+    items = hd(data.items)
+
+    # Convert the duration into a human readable format
+    length_regex = tl(Regex.run(~r/PT(\d+H)?(\d+M)?(\d+S)?/, items.contentDetails.duration))
+    duration = youtube_get_formatted_time(length_regex)
+
+    # The information we need to create our video
+    %{duration: duration, thumbnail: items.snippet.thumbnails.high.url,
+      title: items.snippet.title, video_id: video_id,
+      view_count: String.to_integer(items.statistics.viewCount),
+      embed: "https://www.youtube.com/embed/#{video_id}?rel=0"}
   end
 
   defp youtube_get_formatted_time(length) do
