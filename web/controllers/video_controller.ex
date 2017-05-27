@@ -1,3 +1,5 @@
+require IEx
+
 defmodule Vidshare.VideoController do
   use Vidshare.Web, :controller
   use Rummage.Phoenix.Controller
@@ -27,18 +29,21 @@ defmodule Vidshare.VideoController do
   end
 
   def create(conn, %{"video" => video_params}) do
-    # Sets regex to nil if invalid URL to make sure we only get valid YouTube links
-    regex = Regex.run(~r/(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/, video_params["video_id"])
+    # Sets regex to nil if invalid URL to make sure we only get valid YouTube/Vimeo links
+    # regex = Regex.run(~r/(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/, video_params["video_id"])
+
+    regex = Regex.run(~r/^.*((youtu.be\/|vimeo.com\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/, video_params["video_id"])
+    IEx.pry
 
     if regex == nil do
       changeset = Video.changeset(%Video{})
 
       conn
-      |> put_flash(:error, "Invalid YouTube URL")
+      |> put_flash(:error, "Invalid URL")
       |> render("new.html", changeset: changeset)
     else
       # Grab only the video ID from the submitted YouTube link
-      video_id = List.first(tl(regex))
+      video_id = List.last(regex)
 
       # Submit our info to the YouTube API and get back the JSON
       json_data = HTTPoison.get! "https://www.googleapis.com/youtube/v3/videos?id=#{video_id}&key=#{System.get_env("YOUTUBE_API_KEY")}&part=snippet,statistics,contentDetails&fields=items(id,snippet(title,thumbnails(high)),statistics(viewCount),contentDetails(duration))"
