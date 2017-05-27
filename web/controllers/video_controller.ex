@@ -33,7 +33,6 @@ defmodule Vidshare.VideoController do
     # regex = Regex.run(~r/(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/, video_params["video_id"])
 
     regex = Regex.run(~r/^.*((youtu.be\/|vimeo.com\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/, video_params["video_id"])
-    IEx.pry
 
     if regex == nil do
       changeset = Video.changeset(%Video{})
@@ -45,23 +44,38 @@ defmodule Vidshare.VideoController do
       # Grab only the video ID from the submitted YouTube link
       video_id = List.last(regex)
 
-      # Submit our info to the YouTube API and get back the JSON
-      json_data = HTTPoison.get! "https://www.googleapis.com/youtube/v3/videos?id=#{video_id}&key=#{System.get_env("YOUTUBE_API_KEY")}&part=snippet,statistics,contentDetails&fields=items(id,snippet(title,thumbnails(high)),statistics(viewCount),contentDetails(duration))"
+      valid_attrs = if Regex.run(~r/[a-z]/i, video_id) == nil do
+        # Submit our info to the Vimeo API and get back the JSON
+        json_data = HTTPoison.get!("https://api.vimeo.com/videos/#{video_id}?fields=uri,name,description,link,duration,pictures,stats", %{"Authorization" => "bearer #{System.get_env("VIMEO_TOKEN")}"})
 
-      # Decode the JSON
-      data = Poison.decode!(json_data.body, keys: :atoms)
+        # Decode the JSON
+        data = Poison.decode!(json_data.body, keys: :atoms)
 
-      # Grab our items from the JSON list within our data
-      items = hd(data.items)
+        # The information we need to create our video
+        %{duration: data.duration, thumbnail: List.last(data.pictures.sizes).link,
+          title: data.description, video_id: video_id,
+          view_count: data.stats.plays,
+          embed: "https://player.vimeo.com/video/#{video_id}?badge=0&autopause=0&player_id=0"}
+      else
+        # Submit our info to the YouTube API and get back the JSON
+        json_data = HTTPoison.get! "https://www.googleapis.com/youtube/v3/videos?id=#{video_id}&key=#{System.get_env("YOUTUBE_API_KEY")}&part=snippet,statistics,contentDetails&fields=items(id,snippet(title,thumbnails(high)),statistics(viewCount),contentDetails(duration))"
 
-      # Convert the duration into a human readable format
-      length_regex = tl(Regex.run(~r/PT(\d+H)?(\d+M)?(\d+S)?/, items.contentDetails.duration))
-      duration = get_formatted_time(length_regex)
+        # Decode the JSON
+        data = Poison.decode!(json_data.body, keys: :atoms)
+        IEx.pry
+        # Grab our items from the JSON list within our data
+        items = hd(data.items)
 
-      # The information we need to create our video
-      valid_attrs = %{duration: duration, thumbnail: items.snippet.thumbnails.high.url,
-                      title: items.snippet.title, video_id: items.id,
-                      view_count: String.to_integer(items.statistics.viewCount)}
+        # Convert the duration into a human readable format
+        length_regex = tl(Regex.run(~r/PT(\d+H)?(\d+M)?(\d+S)?/, items.contentDetails.duration))
+        duration = get_formatted_time(length_regex)
+
+        # The information we need to create our video
+        %{duration: duration, thumbnail: items.snippet.thumbnails.high.url,
+          title: items.snippet.title, video_id: video_id,
+          view_count: String.to_integer(items.statistics.viewCount),
+          embed: "https://www.youtube.com/embed/#{video_id}?rel=0"}
+      end
 
       # Creates are changeset and builds the association with the current user
       changeset = conn.assigns.user
