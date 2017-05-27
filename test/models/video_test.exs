@@ -3,7 +3,7 @@ defmodule Vidshare.VideoTest do
 
   alias Vidshare.Video
 
-  @valid_attrs %{duration: "some content", thumbnail: "some content", title: "some content", video_id: "some content", view_count: 42}
+  @valid_attrs %{duration: "some content", thumbnail: "some content", title: "some content", video_id: "some content", view_count: 42, embed: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
