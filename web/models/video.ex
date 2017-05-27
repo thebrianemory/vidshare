@@ -8,6 +8,7 @@ defmodule Vidshare.Video do
     field :duration, :string
     field :thumbnail, :string
     field :view_count, :integer
+    field :embed, :string
     belongs_to :user, Vidshare.User
 
     timestamps()
@@ -18,8 +19,8 @@ defmodule Vidshare.Video do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:video_id, :title, :duration, :thumbnail, :view_count])
-    |> validate_required([:video_id, :title, :duration, :thumbnail, :view_count])
+    |> cast(params, [:video_id, :title, :duration, :thumbnail, :view_count, :embed])
+    |> validate_required([:video_id, :title, :duration, :thumbnail, :view_count, :embed])
     |> unique_constraint(:video_id)
   end
 end
