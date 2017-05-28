@@ -16,7 +16,7 @@ defmodule Vidshare.VideoControllerTest do
     conn = conn
     |> assign(:user, user)
     |> get(video_path(conn, :new))
-    assert html_response(conn, 200) =~ "Add video"
+    assert html_response(conn, 200) =~ "YouTube or Vimeo URL"
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
