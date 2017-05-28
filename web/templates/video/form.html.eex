@@ -5,7 +5,6 @@
     </div>
   <% end %>
 <div class="form-group">
-    <%= label f, :video_id, class: "text-left", for: "left-label" %>
     <%= text_input f, :video_id, type: "text", id: "left-label", required: "required", class: "form-control" %>
     <%= error_tag f, :video_id %>
   </div>
