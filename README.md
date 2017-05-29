@@ -6,10 +6,4 @@ I wanted to use my idea as my first Elixir Phoenix project. I have thought of wa
 
 ## How it works
 
-You must sign in via GitHub to add a video. To add a video, you only need the YouTube URL. You submit the URL
-and the video information is obtained from the YouTube API and added to the database. This allows the video to be watched within the app using the YouTube embed.
-
-## Future features
-
-- Adding Vimeo videos
-- Have organizations that a user is a part of. Videos added as part of an organization are only viewed by that organization.
+You must sign in via GitHub to add a video. To add a video, you only need the YouTube or Vimeo URL. You submit the URL and the video information is obtained from the  YouTube or Vimeo API and added to the database. This allows the video to be watched within the app using the  YouTube or Vimeo embed.
