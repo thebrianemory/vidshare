@@ -123,7 +123,7 @@ defmodule Vidshare.VideoController do
 
   defp youtube_get_formatted_time(duration) do
     [hours, minutes, seconds] = for x <- duration do
-      String.to_integer(hd(Regex.run(~r{\d+}, x) || ["0"]))
+      hd(Regex.run(~r{\d+}, x) || ["0"]) |> String.to_integer
     end
 
     {_status, time} = Time.new(hours, minutes, seconds)
