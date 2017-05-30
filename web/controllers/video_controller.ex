@@ -28,7 +28,7 @@ defmodule Vidshare.VideoController do
 
   def create(conn, %{"video" => video_params}) do
     # Sets regex to nil if invalid URL to make sure we only get valid YouTube/Vimeo links
-    regex = Regex.run(~r/^.*((youtu.be\/|vimeo.com\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/, video_params["video_id"])
+    regex = Regex.run(~r{^.*((youtu.be\/|vimeo.com\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*}, video_params["video_id"])
 
     if regex == nil do
       changeset = Video.changeset(%Video{})
@@ -40,7 +40,7 @@ defmodule Vidshare.VideoController do
       # Grab only the video ID from the submitted YouTube/Vimeo link
       video_id = List.last(regex)
 
-      valid_attrs = if Regex.run(~r/[a-z]/i, video_id) == nil do
+      valid_attrs = if Regex.run(~r{[a-z]}i, video_id) == nil do
         create_vimeo_attributes(video_id)
       else
         create_youtube_attributes(video_id)
@@ -111,7 +111,7 @@ defmodule Vidshare.VideoController do
     items = hd(data.items)
 
     # Convert the duration into a human readable format
-    length_regex = tl(Regex.run(~r/PT(\d+H)?(\d+M)?(\d+S)?/, items.contentDetails.duration))
+    length_regex = tl(Regex.run(~r{PT(\d+H)?(\d+M)?(\d+S)?}, items.contentDetails.duration))
     duration = youtube_get_formatted_time(length_regex)
 
     # The information we need to create our video
