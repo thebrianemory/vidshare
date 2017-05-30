@@ -111,8 +111,8 @@ defmodule Vidshare.VideoController do
     items = hd(data.items)
 
     # Convert the duration into a human readable format
-    length_regex = tl(Regex.run(~r{PT(\d+H)?(\d+M)?(\d+S)?}, items.contentDetails.duration))
-    duration = youtube_get_formatted_time(length_regex)
+    duration = tl(Regex.run(~r{PT(\d+H)?(\d+M)?(\d+S)?}, items.contentDetails.duration))
+    |> youtube_get_formatted_time()
 
     # The information we need to create our video
     %{duration: duration, thumbnail: items.snippet.thumbnails.high.url,
@@ -121,16 +121,13 @@ defmodule Vidshare.VideoController do
       embed: "https://www.youtube.com/embed/#{video_id}?rel=0"}
   end
 
-  defp youtube_get_formatted_time(length) do
-    hours = hd((Regex.run(~r/\d+/, Enum.at(length, 0)) || ["00"]))
-    minutes = hd((Regex.run(~r/\d+/, Enum.at(length, 1)) || ["00"]))
-    seconds = hd((Regex.run(~r/\d+/, Enum.at(length, 2)) || ["00"]))
+  defp youtube_get_formatted_time(duration) do
+    [hours, minutes, seconds] = for x <- duration do
+      String.to_integer(hd(Regex.run(~r{\d+}, x) || ["0"]))
+    end
 
-    converted_hrs = if String.length(hours) == 2, do: hours, else: Enum.join(["0", hours], "")
-    converted_mins = if String.length(minutes) == 2, do: minutes, else: Enum.join(["0", minutes], "")
-    converted_secs = if String.length(seconds) == 2, do: seconds, else: Enum.join(["0", seconds], "")
-
-    Enum.join([converted_hrs, converted_mins, converted_secs], ":")
+    {_status, time} = Time.new(hours, minutes, seconds)
+    Time.to_string(time)
   end
 
   defp vimeo_sec_to_str(sec) do
