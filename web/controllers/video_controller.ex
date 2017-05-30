@@ -132,14 +132,12 @@ defmodule Vidshare.VideoController do
 
   defp vimeo_sec_to_str(sec) do
     {_, [s, m, h]} =
-        Enum.reduce([(60*60), 60, 1], {sec,[]}, fn divisor,{n,acc} ->
-          {rem(n,divisor), [div(n,divisor) | acc]}
-        end)
-    converted_hrs = if String.length("#{h}") == 2, do: "#{h}", else: Enum.join(["0", "#{h}"], "")
-    converted_mins = if String.length("#{m}") == 2, do: "#{m}", else: Enum.join(["0", "#{m}"], "")
-    converted_secs = if String.length("#{s}") == 2, do: "#{s}", else: Enum.join(["0", "#{s}"], "")
+      Enum.reduce([(60*60), 60, 1], {sec,[]}, fn divisor,{n,acc} ->
+        {rem(n,divisor), [div(n,divisor) | acc]}
+      end)
 
-    Enum.join([converted_hrs, converted_mins, converted_secs], ":")
+    {_status, time} = Time.new(h, m, s)
+    Time.to_string(time)
   end
 
   defp check_video_owner(conn, _params) do
