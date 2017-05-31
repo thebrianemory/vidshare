@@ -15,10 +15,11 @@ defmodule Vidshare.VideoController do
     {query, rummage} = Video
     |> Video.rummage(params["rummage"])
 
-    videos = query
-    |> Repo.all
-    |> Repo.preload(:user)
-    render(conn, "index.html", videos: videos, rummage: rummage)
+    videos =
+      query
+      |> Repo.all
+      |> Repo.preload(:user)
+      render(conn, "index.html", videos: videos, rummage: rummage)
   end
 
   def new(conn, _params) do
@@ -28,7 +29,8 @@ defmodule Vidshare.VideoController do
 
   def create(conn, %{"video" => video_params}) do
     # Sets regex to nil if invalid URL to make sure we only get valid YouTube/Vimeo links
-    regex = Regex.run(~r{^.*((youtu.be\/|vimeo.com\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*}, video_params["video_id"])
+    regex =
+      Regex.run(~r{^.*((youtu.be\/|vimeo.com\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*}, video_params["video_id"])
 
     if regex == nil do
       changeset = Video.changeset(%Video{})
@@ -40,11 +42,12 @@ defmodule Vidshare.VideoController do
       # Grab only the video ID from the submitted YouTube/Vimeo link
       video_id = List.last(regex)
 
-      valid_attrs = if Regex.run(~r{[a-z]}i, video_id) == nil do
-        create_vimeo_attributes(video_id)
-      else
-        create_youtube_attributes(video_id)
-      end
+      valid_attrs =
+        if Regex.run(~r{[a-z]}i, video_id) == nil do
+          create_vimeo_attributes(video_id)
+        else
+          create_youtube_attributes(video_id)
+        end
 
       # Creates are changeset and builds the association with the current user
       changeset = conn.assigns.user
@@ -86,7 +89,8 @@ defmodule Vidshare.VideoController do
 
   defp create_vimeo_attributes(video_id) do
     # Submit our info to the Vimeo API and get back the JSON
-    json_data = HTTPoison.get!("https://api.vimeo.com/videos/#{video_id}?fields=uri,name,link,duration,pictures,stats", %{"Authorization" => "bearer #{System.get_env("VIMEO_TOKEN")}"})
+    json_data =
+      HTTPoison.get!("https://api.vimeo.com/videos/#{video_id}?fields=uri,name,link,duration,pictures,stats", %{"Authorization" => "bearer #{System.get_env("VIMEO_TOKEN")}"})
 
     # Decode the JSON
     data = Poison.decode!(json_data.body, keys: :atoms)
@@ -103,7 +107,8 @@ defmodule Vidshare.VideoController do
 
   defp create_youtube_attributes(video_id) do
     # Submit our info to the YouTube API and get back the JSON
-    json_data = HTTPoison.get! "https://www.googleapis.com/youtube/v3/videos?id=#{video_id}&key=#{System.get_env("YOUTUBE_API_KEY")}&part=snippet,statistics,contentDetails&fields=items(id,snippet(title,thumbnails(high)),statistics(viewCount),contentDetails(duration))"
+    json_data =
+      HTTPoison.get! "https://www.googleapis.com/youtube/v3/videos?id=#{video_id}&key=#{System.get_env("YOUTUBE_API_KEY")}&part=snippet,statistics,contentDetails&fields=items(id,snippet(title,thumbnails(high)),statistics(viewCount),contentDetails(duration))"
 
     # Decode the JSON
     data = Poison.decode!(json_data.body, keys: :atoms)
@@ -111,8 +116,9 @@ defmodule Vidshare.VideoController do
     items = hd(data.items)
 
     # Convert the duration into a human readable format
-    duration = tl(Regex.run(~r{PT(\d+H)?(\d+M)?(\d+S)?}, items.contentDetails.duration))
-    |> youtube_get_formatted_time()
+    duration =
+      tl(Regex.run(~r{PT(\d+H)?(\d+M)?(\d+S)?}, items.contentDetails.duration))
+      |> youtube_get_formatted_time()
 
     # The information we need to create our video
     %{duration: duration, thumbnail: items.snippet.thumbnails.high.url,
@@ -122,9 +128,8 @@ defmodule Vidshare.VideoController do
   end
 
   defp youtube_get_formatted_time(duration) do
-    [hours, minutes, seconds] = for x <- duration do
-      hd(Regex.run(~r{\d+}, x) || ["0"]) |> String.to_integer
-    end
+    [hours, minutes, seconds] =
+      for x <- duration, do: hd(Regex.run(~r{\d+}, x) || ["0"]) |> String.to_integer
 
     {_status, time} = Time.new(hours, minutes, seconds)
     Time.to_string(time)
