@@ -26,6 +26,12 @@ defmodule VideoShareWeb.AuthController do
     end
   end
 
+  def delete(conn, _params) do
+    conn
+    |> configure_session(drop: true)
+    |> redirect(to: page_path(conn, :index))
+  end
+
   defp insert_or_update_user(changeset) do
     case Repo.get_by(User, email: changeset.changes.email) do
       nil ->

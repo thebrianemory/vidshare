@@ -43,6 +43,7 @@ defmodule VideoShare.Mixfile do
       {:cowboy, "~> 1.0"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_github, "~> 0.4"},
+      {:ex_machina, "~> 2.0", only: :test},
     ]
   end
 
