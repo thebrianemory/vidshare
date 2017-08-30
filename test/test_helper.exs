@@ -1,4 +1,4 @@
-ExUnit.start
+ExUnit.start()
 
-Ecto.Adapters.SQL.Sandbox.mode(Vidshare.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(VideoShare.Repo, :manual)
 

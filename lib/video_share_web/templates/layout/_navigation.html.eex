@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">VideoShare</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="mr-auto"></ul>
+    <ul class="navbar-nav">
+      <%= if @conn.assigns[:user] do %>
+        <li class="nav-item">
+          <%= link "Videos", to: "#", class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link "Add Video", to: "#", class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link "Sign out", to: "#", class: "nav-link" %>
+        </li>
+      <% else %>
+        <li class="nav-item">
+          <%= link "Videos", to: "#", class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link "Sign in with GitHub", to: "#", class: "nav-link" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</nav>

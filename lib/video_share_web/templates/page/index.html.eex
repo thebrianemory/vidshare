@@ -1,0 +1,6 @@
+<div class="hero-section">
+  <div class="hero-section-text">
+    <h1><%= gettext "Welcome to %{name}", name: "VideoShare!" %></h1>
+    <h3>A video sharing site<br />making it easy to share unlisted videos</h3>
+  </div>
+</div>
