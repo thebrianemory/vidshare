@@ -4,14 +4,12 @@ This was my first Elixir Phoenix app (please forgive the horrible code ;) ). It 
 
 This app was the basis for my Elixir Phoenix tutorial: https://medium.brianemory.com/elixir-phoenix-creating-an-app-part-1-the-setup-6626264be03 (recently updated to using Phoenix 1.3).
 
-I am in the process of updating this to Phoenix 1.3. It will get some much
-needed refactoring along the way (some of which I did when I updated my
-tutorial). I will be changing the process of logging in so that an organization
-would create an account and then invite their team to join. Videos shared
-within an organization are only visible by those in the organization.
-
-The update version, VideoShare, will be here:
-https://github.com/thebrianemory/videoshare.
+## Roadmap
+- [ ] Update to Phoenix 1.3 including much needed refactoring (in progress)
+- [ ] Change sign in and sign up to use Coherence instead of Google Ueberauth
+- [ ] Organizations that create accounts can invite users to join their
+  organization
+- [ ] You can only see videos shared within your organization
 
 ## How it works
 
