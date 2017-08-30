@@ -19,6 +19,14 @@ defmodule VideoShareWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/auth", VideoShareWeb do
+    pipe_through :browser
+
+    get "/signout", AuthController, :delete
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :new
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", VideoShareWeb do
   #   pipe_through :api

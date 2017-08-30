@@ -67,10 +67,10 @@ exports.config = {
 
   npm: {
     enabled: true,
-    globals: { // Bootstrap JavaScript requires both '$', 'jQuery', and Tether in global scope
+    globals: {
       $: 'jquery',
       jQuery: 'jquery',
-      bootstrap: 'bootstrap' // require Bootstrap JavaScript globally too
+      bootstrap: 'bootstrap'
     }
   }
 };
