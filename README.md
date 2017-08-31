@@ -4,6 +4,10 @@ This was my first Elixir Phoenix app (please forgive the horrible code ;) ). It 
 
 This app was the basis for my Elixir Phoenix tutorial: https://medium.brianemory.com/elixir-phoenix-creating-an-app-part-1-the-setup-6626264be03 (recently updated to using Phoenix 1.3).
 
+I am in the process of updgrading this app to Phoenix 1.3. Since my tutorial is
+based off this app, I will also have a chance to follow along the tutorial to
+fix any mistakes I have made (I've found a few so far).
+
 ## Roadmap
 - [ ] Update to Phoenix 1.3 including much needed refactoring (in progress)
 - [ ] Change sign in and sign up to use Coherence instead of Google Ueberauth

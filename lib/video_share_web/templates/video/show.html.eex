@@ -1,0 +1,30 @@
+<div class="container video-index">
+  <div class="row justify-content-center">
+    <div class="col-md-10 card bg-light">
+      <div class="card-body">
+        <div class="row">
+          <h3>
+            <%= @video.title %> <span class="duration-text">(<%= @video.duration %>)</span>
+          </h3>
+          <div>
+            Views: <%= Number.Delimit.number_to_delimited(@video.view_count, precision: 0) %>
+          </div>
+          <div class="embed-responsive embed-responsive-16by9 text-center">
+            <iframe src="<%= @video.embed %>" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-sm-4 col-md-2">
+            <%= link "Back", to: video_path(@conn, :index), class: "btn btn-primary btn-xs" %>
+          </div>
+          <div class="col-sm-4 col-md-2">
+            <%= if @conn.assigns.user && @conn.assigns.user.id == @video.user_id do %>
+              <%= link "Delete video", to: video_path(@conn, :delete, @video), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

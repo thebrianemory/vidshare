@@ -1,0 +1,39 @@
+<div class="container video-index">
+  <div class="row justify-content-center">
+    <div class="col-md-10 card bg-light">
+      <div class="card-body">
+        <div class="card bg-light rummage-box">
+          <div class="card-body">
+            <p>
+              Sort by: <span class="sort-link"><%= sort_link @conn, @rummage, [field: :title, ci: true] %> ~
+              <%= sort_link @conn, @rummage, [field: :view_count] %> ~
+              <%= sort_link @conn, @rummage, [field: :duration] %></span>
+            </p>
+
+            <p>
+              <%= search_form(@conn, @rummage, [fields: [title: %{label: "", search_type: "ilike"},],
+                                                button_class: "btn btn-search"]) %>
+            </p>
+          </div>
+        </div>
+        <%= for video <- @videos do %>
+          <div class="row">
+            <div class="">
+              <h4>
+                <%= link video.title, to: video_path(@conn, :show, video) %> <span class="duration-text">(<%= video.duration %>)</span>
+              </h4>
+              <div>
+                Views: <%= Number.Delimit.number_to_delimited(video.view_count, precision: 0) %>
+              </div>
+              <div>
+                <%= link img_tag(video.thumbnail, style: "height:200px"), to: video_path(@conn, :show, video) %>
+              </div>
+              <hr>
+            </div>
+          </div>
+        <% end %>
+        <%= pagination_link(@conn, @rummage) %>
+      </div>
+    </div>
+  </div>
+</div>
