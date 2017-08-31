@@ -25,9 +25,11 @@ defmodule VideoShareWeb.VideoControllerTest do
   end
 
   describe "index" do
-    test "lists all videos", %{conn: conn} do
+    setup [:create_video]
+
+    test "lists all videos", %{conn: conn, video: video} do
       conn = get conn, video_path(conn, :index)
-      assert html_response(conn, 200) =~ "Listing Videos"
+      assert html_response(conn, 200) =~ video.title
     end
   end
 
@@ -75,6 +77,16 @@ defmodule VideoShareWeb.VideoControllerTest do
              |> post(video_path(conn, :create), video: @invalid_attrs)
 
       assert html_response(conn, 200) =~ "Add video"
+    end
+  end
+
+  describe "show video" do
+    setup [:create_video]
+
+    test "shows chosen video", %{conn: conn, video: video} do
+      conn = get conn, video_path(conn, :show, video)
+
+      assert html_response(conn, 200) =~ video.title
     end
   end
 

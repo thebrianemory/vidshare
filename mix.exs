@@ -46,6 +46,7 @@ defmodule VideoShare.Mixfile do
       {:ex_machina, "~> 2.0", only: :test},
       {:poison, "~> 3.1"},
       {:httpoison, "~> 0.13"},
+      {:number, "~> 0.5.2"},
     ]
   end
 

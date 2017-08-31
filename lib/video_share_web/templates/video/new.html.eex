@@ -1,13 +1,15 @@
 <div class="container video-index">
-  <div class="col-md-8 col-md-offset-2">
-    <div class="well">
-      <div>
-        <h2>YouTube or Vimeo URL</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-8 card bg-light">
+      <div class="card-body">
         <div>
-          <%= render "form.html", changeset: @changeset, action: video_path(@conn, :create) %>
-        </div>
-        <div>
-          <%= link "Back", to: video_path(@conn, :index), class: "btn btn-primary btn-sm" %>
+          <h2>YouTube or Vimeo URL</h2>
+          <div>
+            <%= render "form.html", changeset: @changeset, action: video_path(@conn, :create) %>
+          </div>
+          <div>
+            <%= link "Back", to: video_path(@conn, :index), class: "btn btn-primary btn-sm" %>
+          </div>
         </div>
       </div>
     </div>
