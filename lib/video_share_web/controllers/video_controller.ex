@@ -4,6 +4,8 @@ defmodule VideoShareWeb.VideoController do
   alias VideoShare.Videos
   alias VideoShare.Videos.{Video, YoutubeData, VimeoData}
 
+  plug :check_video_owner when action in [:delete]
+
   def index(conn, _params) do
     videos = Videos.list_videos()
     render(conn, "index.html", videos: videos)
@@ -53,6 +55,18 @@ defmodule VideoShareWeb.VideoController do
       _ ->
         YoutubeData.create_or_show_video(conn, video_id)
     end
+  end
 
+  defp check_video_owner(conn, _params) do
+    %{params: %{"id" => video_id}} = conn
+
+    if VideoShare.Repo.get(Video, video_id).user_id == conn.assigns.user.id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You cannot do that")
+      |> redirect(to: video_path(conn, :index))
+      |> halt()
+    end
   end
 end

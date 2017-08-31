@@ -10,14 +10,24 @@ defmodule VideoShareWeb.Router do
     plug VideoShare.Plugs.SetUser
   end
 
+  pipeline :auth do
+    plug VideoShareWeb.Plugs.RequireAuth
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/", VideoShareWeb do
+    pipe_through [:browser, :auth]
+
+    resources "/videos", VideoController, only: [:new, :create]
+  end
+
+  scope "/", VideoShareWeb do
     pipe_through :browser # Use the default browser stack
 
-    resources "/videos", VideoController, except: [:edit, :update]
+    resources "/videos", VideoController, only: [:index, :show, :delete]
     get "/", PageController, :index
   end
 

@@ -33,7 +33,11 @@ defmodule VideoShareWeb.VideoControllerTest do
 
   describe "new video" do
     test "renders form", %{conn: conn} do
-      conn = get conn, video_path(conn, :new)
+      user = insert(:user)
+
+      conn = conn
+           |> assign(:user, user)
+           |> get(video_path(conn, :new))
       assert html_response(conn, 200) =~ "Add video"
     end
   end
@@ -77,8 +81,11 @@ defmodule VideoShareWeb.VideoControllerTest do
   describe "delete video" do
     setup [:create_video]
 
-    test "deletes chosen video", %{conn: conn, video: video} do
-      conn = delete conn, video_path(conn, :delete, video)
+    test "deletes chosen video", %{conn: conn, video: video, user: user} do
+      conn = conn
+           |> assign(:user, user)
+           |> delete(video_path(conn, :delete, video))
+
       assert redirected_to(conn) == video_path(conn, :index)
       assert_error_sent 404, fn ->
         get conn, video_path(conn, :show, video)
