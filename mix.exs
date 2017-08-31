@@ -44,6 +44,8 @@ defmodule VideoShare.Mixfile do
       {:ueberauth, "~> 0.4"},
       {:ueberauth_github, "~> 0.4"},
       {:ex_machina, "~> 2.0", only: :test},
+      {:poison, "~> 3.1"},
+      {:httpoison, "~> 0.13"},
     ]
   end
 

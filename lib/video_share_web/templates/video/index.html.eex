@@ -1,0 +1,34 @@
+<h2>Listing Videos</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Video</th>
+      <th>Title</th>
+      <th>Duration</th>
+      <th>Thumbnail</th>
+      <th>View count</th>
+      <th>Embed</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for video <- @videos do %>
+    <tr>
+      <td><%= video.video_id %></td>
+      <td><%= video.title %></td>
+      <td><%= video.duration %></td>
+      <td><%= video.thumbnail %></td>
+      <td><%= video.view_count %></td>
+      <td><%= video.embed %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: video_path(@conn, :show, video), class: "btn btn-default btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Video", to: video_path(@conn, :new) %></span>

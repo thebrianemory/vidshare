@@ -9,17 +9,17 @@
     <ul class="navbar-nav">
       <%= if @conn.assigns[:user] do %>
         <li class="nav-item">
-          <%= link "Videos", to: "#", class: "nav-link" %>
+          <%= link "Videos", to: video_path(@conn, :index), class: "nav-link" %>
         </li>
         <li class="nav-item">
-          <%= link "Add Video", to: "#", class: "nav-link" %>
+          <%= link "Add Video", to: video_path(@conn, :new), class: "nav-link" %>
         </li>
         <li class="nav-item">
           <%= link "Sign out", to: auth_path(@conn, :delete), class: "nav-link" %>
         </li>
       <% else %>
         <li class="nav-item">
-          <%= link "Videos", to: "#", class: "nav-link" %>
+          <%= link "Videos", to: video_path(@conn, :index), class: "nav-link" %>
         </li>
         <li class="nav-item">
           <%= link "Sign in with GitHub", to: auth_path(@conn, :request, "github", scope: "read:user user:email read:org"), class: "nav-link" %>

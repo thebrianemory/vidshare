@@ -17,6 +17,7 @@ defmodule VideoShareWeb.Router do
   scope "/", VideoShareWeb do
     pipe_through :browser # Use the default browser stack
 
+    resources "/videos", VideoController, except: [:edit, :update]
     get "/", PageController, :index
   end
 
