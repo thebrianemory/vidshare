@@ -4,6 +4,7 @@ defmodule VideoShare.Videos.Video do
   alias VideoShare.Videos.Video
   alias VideoShare.User
 
+  use Rummage.Ecto
 
   schema "videos" do
     field :duration, :string

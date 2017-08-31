@@ -2,8 +2,19 @@
   <div class="row justify-content-center">
     <div class="col-md-10 card bg-light">
       <div class="card-body">
-        <div class="card-body">
-          <!-- rummage -->
+        <div class="card bg-light rummage-box">
+          <div class="card-body">
+            <p>
+              Sort by: <span class="sort-link"><%= sort_link @conn, @rummage, [field: :title, ci: true] %> ~
+              <%= sort_link @conn, @rummage, [field: :view_count] %> ~
+              <%= sort_link @conn, @rummage, [field: :duration] %></span>
+            </p>
+
+            <p>
+              <%= search_form(@conn, @rummage, [fields: [title: %{label: "", search_type: "ilike"},],
+                                                button_class: "btn btn-search"]) %>
+            </p>
+          </div>
         </div>
         <%= for video <- @videos do %>
           <div class="row">
@@ -21,6 +32,7 @@
             </div>
           </div>
         <% end %>
+        <%= pagination_link(@conn, @rummage) %>
       </div>
     </div>
   </div>

@@ -37,3 +37,25 @@
   font-size: .65em;
   color: #555;
 }
+
+/* Rummage stylings */
+.btn-search {
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  margin-top: 5px;
+}
+
+.sort-link a {
+  position: relative;
+  display: inline;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #007bff;
+  background-color: inherit;
+  border: inherit;
+}
+
+.rummage-box {
+  margin-bottom: 10px;
+}

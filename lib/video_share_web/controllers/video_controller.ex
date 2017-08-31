@@ -1,14 +1,19 @@
 defmodule VideoShareWeb.VideoController do
   use VideoShareWeb, :controller
+  use Rummage.Phoenix.Controller
 
   alias VideoShare.Videos
   alias VideoShare.Videos.{Video, YoutubeData, VimeoData}
 
   plug :check_video_owner when action in [:delete]
 
-  def index(conn, _params) do
-    videos = Videos.list_videos()
-    render(conn, "index.html", videos: videos)
+  def index(conn, params) do
+    {query, rummage} = Video
+    |> Video.rummage(params["rummage"])
+
+    videos = VideoShare.Repo.all(query)
+
+    render(conn, "index.html", videos: videos, rummage: rummage)
   end
 
   def new(conn, _params) do
