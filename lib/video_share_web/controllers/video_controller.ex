@@ -2,7 +2,7 @@ defmodule VideoShareWeb.VideoController do
   use VideoShareWeb, :controller
 
   alias VideoShare.Videos
-  alias VideoShare.Videos.{Video, YoutubeData}
+  alias VideoShare.Videos.{Video, YoutubeData, VimeoData}
 
   def index(conn, _params) do
     videos = Videos.list_videos()

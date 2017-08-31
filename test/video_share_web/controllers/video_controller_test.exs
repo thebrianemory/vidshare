@@ -6,6 +6,7 @@ defmodule VideoShareWeb.VideoControllerTest do
   alias VideoShare.Videos.Video
 
   @create_attrs %{video_id: "https://www.youtube.com/watch?v=tMO28ar0lW8"}
+  @vimeo_create_attrs %{video_id: "https://vimeo.com/127709245"}
   @invalid_attrs %{video_id: ""}
 
   def fixture(:video) do
@@ -38,12 +39,24 @@ defmodule VideoShareWeb.VideoControllerTest do
   end
 
   describe "create video" do
-    test "redirects to show when data is valid", %{conn: conn} do
+    test "redirects to show when YouTube data is valid", %{conn: conn} do
       user = insert(:user)
 
       conn = conn
       |> assign(:user, user)
       |> post(video_path(conn, :create), video: @create_attrs)
+
+      video = Video |> Ecto.Query.last |> VideoShare.Repo.one
+      assert redirected_to(conn) == video_path(conn, :show, video)
+      assert get_flash(conn, :info) == "Video created successfully."
+    end
+
+    test "redirects to show when Vimeo data is valid", %{conn: conn} do
+      user = insert(:user)
+
+      conn = conn
+      |> assign(:user, user)
+      |> post(video_path(conn, :create), video: @vimeo_create_attrs)
 
       video = Video |> Ecto.Query.last |> VideoShare.Repo.one
       assert redirected_to(conn) == video_path(conn, :show, video)
