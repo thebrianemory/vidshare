@@ -18,7 +18,7 @@ config :video_share, VideoShareWeb.Endpoint,
   url: [host: "example.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-config :vidshare, VidshareWeb.Endpoint,
+config :video_share, VideoShareWeb.Endpoint,
   http: [port: {:system, "PORT"}],
   url: [scheme: "https", host: "team-vidshare.herokuapp.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
@@ -29,7 +29,7 @@ config :vidshare, VidshareWeb.Endpoint,
 config :logger, level: :info
 
 # Configure your database
-config :vidshare, Vidshare.Repo,
+config :video_share, VideoShare.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
