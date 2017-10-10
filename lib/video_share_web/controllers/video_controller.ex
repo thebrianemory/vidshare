@@ -5,11 +5,12 @@ defmodule VideoShareWeb.VideoController do
   alias VideoShare.Videos
   alias VideoShare.Videos.{Video, YoutubeData, VimeoData}
 
-  plug :check_video_owner when action in [:delete]
+  plug(:check_video_owner when action in [:delete])
 
   def index(conn, params) do
-    {query, rummage} = Video
-    |> Video.rummage(params["rummage"])
+    {query, rummage} =
+      Video
+      |> Video.rummage(params["rummage"])
 
     videos = VideoShare.Repo.all(query)
 
@@ -29,6 +30,7 @@ defmodule VideoShareWeb.VideoController do
         conn
         |> put_flash(:error, "Invalid URL")
         |> render("new.html", changeset: changeset)
+
       regex ->
         youtube_or_vimeo?(conn, regex)
     end
@@ -49,14 +51,19 @@ defmodule VideoShareWeb.VideoController do
   end
 
   defp has_valid_regex?(video_params) do
-    Regex.run(~r{^.*((youtu.be\/|vimeo.com\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*}, video_params["video_id"])
+    Regex.run(
+      ~r{^.*((youtu.be\/|vimeo.com\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*},
+      video_params["video_id"]
+    )
   end
 
   defp youtube_or_vimeo?(conn, regex) do
-    video_id = tl(regex) |> List.last
+    video_id = tl(regex) |> List.last()
+
     case Regex.run(~r{[a-z]}i, video_id) do
       nil ->
         VimeoData.create_or_show_video(conn, video_id)
+
       _ ->
         YoutubeData.create_or_show_video(conn, video_id)
     end
