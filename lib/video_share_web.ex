@@ -28,8 +28,7 @@ defmodule VideoShareWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/video_share_web/templates",
-                        namespace: VideoShareWeb
+      use Phoenix.View, root: "lib/video_share_web/templates", namespace: VideoShareWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]

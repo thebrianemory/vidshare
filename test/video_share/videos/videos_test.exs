@@ -6,9 +6,30 @@ defmodule VideoShare.VideosTest do
   describe "videos" do
     alias VideoShare.Videos.Video
 
-    @valid_attrs %{duration: "some duration", embed: "some embed", thumbnail: "some thumbnail", title: "some title", video_id: "some video_id", view_count: 42}
-    @update_attrs %{duration: "some updated duration", embed: "some updated embed", thumbnail: "some updated thumbnail", title: "some updated title", video_id: "some updated video_id", view_count: 43}
-    @invalid_attrs %{duration: nil, embed: nil, thumbnail: nil, title: nil, video_id: nil, view_count: nil}
+    @valid_attrs %{
+      duration: "some duration",
+      embed: "some embed",
+      thumbnail: "some thumbnail",
+      title: "some title",
+      video_id: "some video_id",
+      view_count: 42
+    }
+    @update_attrs %{
+      duration: "some updated duration",
+      embed: "some updated embed",
+      thumbnail: "some updated thumbnail",
+      title: "some updated title",
+      video_id: "some updated video_id",
+      view_count: 43
+    }
+    @invalid_attrs %{
+      duration: nil,
+      embed: nil,
+      thumbnail: nil,
+      title: nil,
+      video_id: nil,
+      view_count: nil
+    }
 
     def video_fixture(attrs \\ %{}) do
       {:ok, video} =

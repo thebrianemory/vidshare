@@ -11,7 +11,7 @@ defmodule VideoShare.Application do
       # Start the Ecto repository
       supervisor(VideoShare.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(VideoShareWeb.Endpoint, []),
+      supervisor(VideoShareWeb.Endpoint, [])
       # Start your own worker by calling: VideoShare.Worker.start_link(arg1, arg2, arg3)
       # worker(VideoShare.Worker, [arg1, arg2, arg3]),
     ]

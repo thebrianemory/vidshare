@@ -5,11 +5,11 @@ defmodule VideoShare.User do
   alias VideoShare.Videos.Video
 
   schema "users" do
-    field :email, :string
-    field :full_name, :string
-    field :provider, :string
-    field :token, :string
-    has_many :videos, Video
+    field(:email, :string)
+    field(:full_name, :string)
+    field(:provider, :string)
+    field(:token, :string)
+    has_many(:videos, Video)
 
     timestamps()
   end
