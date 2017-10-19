@@ -51,7 +51,7 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :video_share, VideoShare.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "brianemory",
+  username: "thebrianemory",
   password: "",
   database: "video_share_dev",
   hostname: "localhost",
